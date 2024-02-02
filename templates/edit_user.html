@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/274ee977b7.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            padding-top: 56px;
+            
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-top: 0;
+            }
+        }
+
+        /* Black Navbar */
+        .navbar-dark {
+            background-color: black;
+            min-height: 100vh;
+        }
+
+        /* Black Vertical Navbar */
+        .sidebar {
+            background-color: black;
+            min-height: 100vh;
+        }
+        a{
+            color: white;
+        }
+
+        /* Adjust container padding and center on the screen */
+        .container-fluid {
+            
+            margin-right: auto;
+            margin-left: auto;
+        }
+        @keyframes moveText {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(50px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .moving-text {
+            animation: moveText 3s infinite; /* Adjust the duration as needed */
+            display: inline-block;
+        }
+    </style>
+</head>
+<body style="overflow-x: hidden;background-color: rgb(0, 93, 139);">
+   
+    <div class="container-fluid ">
+        <div class="row ">
+            <!-- Toggle Button -->
+            <button id="toggle-btn" class="btn btn-dark d-md-none"> <span class="navbar-toggler-icon">&#8801;</span></button>
+    
+            <!-- Black Vertical Navbar -->
+            <nav class="col-md-2 d-md-block sidebar" >
+                <div class="sidebar-sticky" >
+                    <ul class="nav flex-column mt-5">
+                        <!-- Welcome Message in Vertical Navbar -->
+                        <li class="nav-item welcome-message">
+                            <div>
+                               
+                            </div>
+                            <img src="https://tse2.mm.bing.net/th?id=OIP.8K-6DPuaujSUIJFUn3t3egHaGF&pid=Api&P=0&h=180" style="height: 90px;width: 200px;">
+                        </li>
+                        <!-- Initial Links -->
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'userhome' %}">
+                                <i class="fa fa-home" aria-hidden="true"></i>Home
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'showuser' %}">
+                                <i class="fa fa-user" aria-hidden="true"></i>Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'image_edit' %}">
+                                <i class="fa fa-picture-o" aria-hidden="true"></i>My Gallery
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'visitor_profile' %}">
+                                <i class="fa fa-eye" aria-hidden="true"></i>Visitor
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'notification' %}">
+                                <i class="fa fa-bell" aria-hidden="true"></i>Notifications
+                                {% if mqn %}
+                                <span class="badge badge-danger">{{ mqn }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'message_request_view' %}">
+                                <i class="fa fa-comment" aria-hidden="true"></i> Message Requests
+                                {% if mr %}
+                                <span class="badge badge-danger">{{ mr }}</span>
+                                {% endif %}
+                            
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'message_view' %}">
+                                <i class="fa fa-comment" aria-hidden="true"></i> Messages
+                                
+                            
+                            </a>
+                        </li>
+                        
+                        
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'search_view' %}">
+                                <i class="fa fa-search" aria-hidden="true"></i>Search
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'password' %}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>Change Password
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'logout' %}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>logout
+                            </a>
+                        </li>
+                        <!-- Additional Links -->
+                        
+                        
+                        
+                    </ul>
+                </div>
+            </nav>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+        
+            
+            
+                    <h2 style="margin-top: 50px; font-weight: bolder;text-align: center;">User Edit</h2>
+        
+                    <form method="post" action="{% url 'update_user' user.id %}" enctype="multipart/form-data" style="border:  1px solid black;background-color: rgb(0, 139, 137);margin: 20px;padding: 10px;margin: 20px;">
+                        {% csrf_token %}
+                    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="fname" id="firstName" value="{{user.user.first_name}}" placeholder="First Name" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="lname" value="{{user.user.last_name}}" id="lastName" placeholder="Last Name" required>
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="uname" value="{{user.user.username}}" id="firstName" placeholder="User Name" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    New Marriage: <input type="radio" name="status" id="newMarriage" value="New_Marriage" {% if user.Status == 'New_Marriage' %}checked{% endif %} required>
+                                    Re Marriage: <input type="radio" name="status" id="reMarriage" value="Re_Marriage" {% if user.Status == 'Re_Marriage' %}checked{% endif %} required>
+                                    
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" value="{{user.Age}}" name="age" id="firstName" placeholder="Enter Age" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" value="{{user.Height}}" name="height" id="firstName" placeholder=" Height in Centmetre" required>  
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-md-6 ">
+                                <div class="input-group">
+                                    Male: <input type="radio" name="gender" id="male" value="male" {% if user.Gender == 'male' %}checked{% endif %} required>
+                                    Female: <input type="radio" name="gender" id="female" value="female" {% if user.Gender == 'female' %}checked{% endif %} required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="email" class="form-control" value="{{user.user.email}}" name="email" placeholder="Enter Email" required>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Place}}" name="place" id="firstName" placeholder="place" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.District}}" name="district" id="firstName" placeholder=" district" required>  
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Designation}}" name="designation" id="firstName" placeholder="Designation" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Contact}}" name="contact" id="firstName" placeholder=" Mobile No:" required>  
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <select name="religion" id="religion" class="form-control">
+                                        <option>--Select Religion--</option>
+                                        {% for rlg in religion %}
+                                            <option value="{{rlg.id}}"{% if user.religion.id == rlg.id %}selected{% endif %}>{{rlg.Religion_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <select name="cast" id="cast" class="form-control">
+                                        <option>--Select cast--</option>
+                                        {% for cast in casts %}
+                                            <option data-religion="{{ cast.Religion.id }}" value="{{ cast.id }}"{% if user.cast.id == cast.id %}selected{% endif %}>{{ cast.Cast }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            $(document).ready(function(){
+                                var religion = $("#religion");
+                                var cast = $("#cast");
+                                var $options = cast.find('option');  // Corrected variable name from "Cast" to "cast"
+                                
+                                religion.on('change', function(){
+                                    cast.html($options.filter('[data-religion="' + this.value + '"]') || '<option value="">--Select cast--</option>');
+                                }).trigger('change');
+                            });
+                        </script>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Father_name}}" name="father_name" id="firstName" placeholder="Father's Name" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Father_occupation}}" name="father_occupation" id="firstName" placeholder=" Father's Occupation" required>  
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Mother_name}}" name="mother_name" id="firstName" placeholder="Mother's Name" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Mother_occupation}}" name="mother_occupation" id="firstName" placeholder=" Mother's Occupation" required>  
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{user.Sibling_name}}" name="sibling_name" id="firstName" placeholder="Sibling's Name" required>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6 mb-3">
+                                <label>Sibling Status:</label><br>
+                                <div class="input-group">
+                                    Married: <input type="radio" name="sb_status" id="married" value="Married" {% if user.Sibling_status == 'Married' %}checked{% endif %} required>
+                                    Unmarried: <input type="radio" name="sb_status" id="unmarried" value="Unmarried" {% if user.Sibling_status == 'Unmarried' %}checked{% endif %} required>
+                                </div>
+                            </div>
+                        </div>
+                    
+                       
+                        
+                        
+                    
+                        <div class="mb-3">
+                            <input type="submit" class="btn btn-primary" value="SAVE" style="margin-left: 150px;background-color: green;" >
+                        </div>
+                        {% if messages %}
+                        <p class="text-success mt-2">{{ messages.0 }}</p>
+                    {% endif %}
+                    </form>
+    
+    
+                    
+        </div>
+        </div>
+        </div>
+        </div>
+       
+
+
+
+           
+           
+            <script>
+                $(document).ready(function () {
+                    $("#toggle-btn").click(function () {
+                        $(".sidebar").toggle();
+                    });
+                });
+            </script>
+    
+          
+
+
+
+    
+</body>
+</html>
+
+

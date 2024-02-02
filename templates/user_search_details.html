@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/274ee977b7.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            padding-top: 56px;
+            
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-top: 0;
+            }
+        }
+
+        /* Black Navbar */
+        .navbar-dark {
+            background-color: black;
+        }
+
+        /* Black Vertical Navbar */
+        .sidebar {
+            background-color: black;
+            height: 100vh;
+        }
+
+        /* Adjust container padding and center on the screen */
+        .container-fluid {
+            
+            margin-right: auto;
+            margin-left: auto;
+        }
+        @keyframes moveText {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(50px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .moving-text {
+            animation: moveText 3s infinite; /* Adjust the duration as needed */
+            display: inline-block;
+        }
+    </style>
+</head>
+<body style="overflow-x: hidden;background-color: rgb(0, 93, 139);">
+   
+    <div class="container-fluid ">
+        <div class="row ">
+            <!-- Toggle Button -->
+            <button id="toggle-btn" class="btn btn-dark d-md-none"> <span class="navbar-toggler-icon">&#8801;</span></button>
+    
+            <!-- Black Vertical Navbar -->
+            <nav class="col-md-2 d-md-block sidebar" >
+                <div class="sidebar-sticky" >
+                    <ul class="nav flex-column mt-5">
+                        <!-- Welcome Message in Vertical Navbar -->
+                        <li class="nav-item welcome-message">
+                            <div>
+                                
+                            </div>
+                        </li>
+                        <!-- Initial Links -->
+                        
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'showuser' %}">
+                                <i class="fa fa-user" aria-hidden="true"></i>Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'visitor_profile' %}">
+                                <i class="fa fa-eye" aria-hidden="true"></i>Visitor
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'message_view' %}">
+                                <i class="fa fa-comment" aria-hidden="true"></i> Messages
+                               
+                            </a>
+                        </li>
+                        
+                        
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'search_view' %}">
+                                <i class="fa fa-search" aria-hidden="true"></i>Search
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'password' %}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>Change Password
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-vertical" href="{% url 'logout' %}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>logout
+                            </a>
+                        </li>
+                        <!-- Additional Links -->
+                        
+                        
+                        
+                    </ul>
+                </div>
+            </nav>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+
+                        <div class="container mt-5">
+                            <div class="row justify-content-center mt-5">
+                                <div class="col-md-10">
+                           
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Member ID: {{ user.Member_id }}
+                                    </div>
+                                    <div class="card-body">
+                                        {% if user.images.all %}
+                    <p><strong>Images:</strong></p>
+                    <div class="row">
+                        {% for image in user.images.all %}
+                            <div class="col-md-4">
+                                <img src="{{ image.image.url }}" alt="User Image" class="img-fluid" style="width: 200px;height: 200px;">
+                               
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                                        <h5 class="card-title">{{ user.user.first_name }} {{ user.user.last_name }}</h5>
+                                        <p class="card-text">
+
+                                            Religion:  {{ user.religion.Religion_name }}<br>
+                                            Gender:    {{ user.Gender }}<br>
+                                            Marital Status:  {{ user.Status }}<br>
+                                            Email:     {{user.user.email}}<br>
+                                            Contact:   {{user.Contact}}<br>
+                                            Age:       {{user.Age}}<br>
+                                            Height:    {{user.Height}}<br>
+                                            District:  {{user.District}}<br>
+                                            Place:     {{user.Place}}<br>
+                                            Designation:{{user.Designation}}<br>
+                                            Cast :      {{user.cast.Cast}}<br>
+                                            Father Name  :{{user.Father_name}}<br>
+                                            Father Occupation :{{user.Father_occupation}}<br>
+                                            Mother Name :{{user.Mother_name}}<br>
+                                            Mother Occupation :{{user.Mother_occupation}}<br>
+                                            Siblings Name :{{user.Sibling_name}}<br>
+                                            Sibligs Marriage Status :{{user.Sibling_status}}
+                                        
+                                            
+                
+                                        </p>
+                                        <a href="{% url 'search_view' %}" class="btn btn-primary">Back</a>
+                                        
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            
+                        </div>
+                        
+
+
+
+           
+           
+            <script>
+                $(document).ready(function () {
+                    $("#toggle-btn").click(function () {
+                        $(".sidebar").toggle();
+                    });
+                });
+            </script>
+    
+          
+
+
+
+    
+</body>
+</html>
+
+

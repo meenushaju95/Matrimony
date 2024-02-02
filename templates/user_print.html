@@ -1,0 +1,43 @@
+<div class="container mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+   
+        <div class="card mb-3">
+            <div class="card-header">
+                Member ID: {{ user.Member_id }}
+            </div>
+            <div class="card-body">
+                {% if user.images.all %}
+<p><strong>Images:</strong></p>
+<div class="row">
+{% for image in user.images.all %}
+    <div class="col-md-4">
+        <img src="{{ image.image.url }}" alt="User Image" class="img-fluid" style="width: 200px;height: 200px;">
+       
+
+    </div>
+{% endfor %}
+</div>
+{% endif %}
+                <h5 class="card-title">{{ user.user.first_name }} {{ user.user.last_name }}</h5>
+                <p class="card-text">
+
+                    Religion:  {{ user.religion.Religion_name }}<br>
+                    Gender:    {{ user.Gender }}<br>
+                    Marital Status:  {{ user.Status }}<br>
+                    Email:     {{user.user.email}}<br>
+                    Contact:   {{user.Contact}}<br>
+                    Age:       {{user.Age}}<br>
+                    Height:    {{user.Height}}<br>
+                    District:  {{user.District}}<br>
+                    Place:     {{user.Place}}<br>
+                    Designation:{{user.Designation}}<br>
+                    Cast :      {{user.cast.Cast}}<br>
+                    Father Name  :{{user.Father_name}}<br>
+                    Father Occupation :{{user.Father_occupation}}<br>
+                    Mother Name :{{user.Mother_name}}<br>
+                    Mother Occupation :{{user.Mother_occupation}}<br>
+                    Siblings Name :{{user.Sibling_name}}<br>
+                    Sibligs Marriage Status :{{user.Sibling_status}}
+                
+                    

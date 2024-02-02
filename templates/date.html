@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load tz%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if indian_time %}
+        <p>Indian Time: {{ indian_time|date:"Y-m-d h:i a" }}</p>
+    {% else %}
+        <p>Indian Time is not available</p>
+    {% endif %}
+
+</body>
+</html>
